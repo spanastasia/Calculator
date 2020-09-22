@@ -13,18 +13,24 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     @IBOutlet var alternativeFunctions: [UIButton]!
     @IBOutlet var basicFunctions: [UIButton]!
+    @IBOutlet var trigonometryFunctions: [UIButton]!
+    @IBOutlet weak var unitsBtn: UIButton!
+    
+    
+    
     var userIsTyping = false
     private var core = CalculatorCore()
-    private let POINT = "."
-    private let EXP: Character = "e"
-    private let MINUS: Character = "-"
-    private let PLUS: Character = "+"
+    private let kPoint = "."
+    private let kExp: Character = "e"
+    private let kMinus: Character = "-"
+    private let kPlus: Character = "+"
     
     
     private func addToDisplay(symbol: String) {
-        if !display.text!.contains(symbol) {
+        guard let text = display.text else { return }
+        if !text.contains(symbol) {
             userIsTyping = true
-            display.text = display.text! + symbol
+            display.text = text + symbol
         }
     }
     
@@ -32,7 +38,10 @@ class ViewController: UIViewController {
         get {
             let formatter = NumberFormatter()
             formatter.numberStyle = .scientific
-            if let number = formatter.number(from: display.text!) {
+            guard let text = display.text else {
+                return 0.0
+            }
+            if let number = formatter.number(from: text) {
                 return Double(truncating: number)
             }
             return 0.0
@@ -42,43 +51,59 @@ class ViewController: UIViewController {
             display.text = String(format: "%g", newValue)
         }
     }
-    
-    
-    @IBAction func touchChangeSign() {
-        var text = display.text!
-        if text.contains(EXP) {
-            let index = text.index(after: text.lastIndex(of: EXP)!)
-            let textBeforeE = text.prefix(upTo: index)
-            var textAfterE = text.suffix(from: index)
-            guard textAfterE.count > 0 else {
-                text.append(MINUS)
-                display.text = text
-                return
-            }
-            if (textAfterE.contains(MINUS)) {
-                textAfterE.removeFirst()
-                display.text = String(textBeforeE) + String(textAfterE)
-            } else if (textAfterE.contains(PLUS)) {
-                textAfterE.removeFirst()
-                display.text = String(textBeforeE) + String(MINUS) + String(textAfterE)
-            } else {
-                display.text = String(textBeforeE) + String(MINUS) + String(textAfterE)
-            }
-        } else {
-            displayValue = -displayValue
+    @IBAction func changeUnits(_ sender: UIButton) {
+        switch core.unitsValue {
+        case .degrees:
+            sender.setTitle(core.unitsValue.rawValue, for: UIControl.State.normal)
+            core.unitsValue = Units.radians
+        case .radians:
+            sender.setTitle(core.unitsValue.rawValue, for: UIControl.State.normal)
+            core.unitsValue = Units.degrees
         }
     }
     
-    @IBAction func touchPoint() {
-        addToDisplay(symbol: POINT)
+    @IBAction func touchChangeSign() {
+        guard display.text != nil else { return }
+        var text = display.text!
+        if text.contains(kExp) {
+            let index = text.index(after: text.lastIndex(of: kExp)!)
+            let textBeforeE = text.prefix(upTo: index)
+            var textAfterE = text.suffix(from: index)
+            guard textAfterE.count > 0 else {
+                text.append(kMinus)
+                display.text = text
+                return
+            }
+            if (textAfterE.contains(kMinus)) {
+                textAfterE.removeFirst()
+                display.text = String(textBeforeE) + String(textAfterE)
+            } else if (textAfterE.contains(kPlus)) {
+                textAfterE.removeFirst()
+                display.text = String(textBeforeE) + String(kMinus) + String(textAfterE)
+            } else {
+                display.text = String(textBeforeE) + String(kMinus) + String(textAfterE)
+            }
+        } else {
+            if text != "0" {
+                displayValue = -displayValue
+            }
+        }
     }
     
-    @IBAction func touchEE() {
-        addToDisplay(symbol: String(EXP))
+    @IBAction func touchSeparator(_ sender: UIButton) {
+        var separator: String
+        if sender.currentTitle == kPoint {
+            separator = kPoint
+        } else {
+            separator = String(kExp)
+            print(kExp)
+        }
+        addToDisplay(symbol: separator)
     }
+    
     
     @IBAction func touchTwoND() {
-        if basicFunctions.randomElement()!.isHidden {
+        if basicFunctions.first!.isHidden {
             basicFunctions.forEach(showBtn(btn:))
             alternativeFunctions.forEach(hideBtn(btn:))
         } else {
@@ -98,7 +123,7 @@ class ViewController: UIViewController {
     
     @IBAction func touchMemoryArytmeticOperation(_ sender: UIButton) {
         var title = sender.currentTitle!
-        if title.removeLast() == MINUS {
+        if title.removeLast() == kMinus {
             displayValue = displayValue - core.bufferValue
         } else {
             displayValue = displayValue + core.bufferValue
@@ -109,12 +134,12 @@ class ViewController: UIViewController {
     
     
     @IBAction func touchDidits(_ sender: UIButton) {
-        let digit = sender.currentTitle!
-        if userIsTyping && displayValue != 0 {
-            let currentOnDisplay = display.text!
-            if currentOnDisplay.count < 16 {
-                display.text = currentOnDisplay + digit
-            }
+        guard let digit = sender.currentTitle, let currentOnDisplay = display.text else { return }
+        if userIsTyping,
+           currentOnDisplay != "0",
+           currentOnDisplay.count < 16
+        {
+            display.text = currentOnDisplay + digit
         } else {
             display.text = digit
             userIsTyping = true
@@ -141,5 +166,35 @@ class ViewController: UIViewController {
         btn.isHidden = false
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        switch core.unitsValue {
+        case .degrees:
+            unitsBtn.setTitle(Units.radians.rawValue, for: UIControl.State.normal)
+        case .radians:
+            unitsBtn.setTitle(Units.degrees.rawValue, for: UIControl.State.normal)
+        }
+        alternativeFunctions.forEach(hideBtn)
+        if Double(view.bounds.width) > Double(view.bounds.height) {
+            basicFunctions.forEach(showBtn)
+        } else {
+            basicFunctions.forEach(hideBtn)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if Double(view.bounds.width) > Double(view.bounds.height) {
+            if basicFunctions.first!.isHidden == alternativeFunctions.first!.isHidden {
+                basicFunctions.forEach(showBtn)
+                alternativeFunctions.forEach(hideBtn)
+            }
+        } else {
+            if !basicFunctions.first!.isHidden, !alternativeFunctions.first!.isHidden {
+                basicFunctions.forEach(hideBtn)
+                alternativeFunctions.forEach(hideBtn)
+            }
+        }
+    }
 }
 

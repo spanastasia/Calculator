@@ -16,7 +16,7 @@
 		3F3BB570250B4F2C0066B6BE /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BB56F250B4F2C0066B6BE /* CalculatorTests.swift */; };
 		3F3BB57B250B4F2C0066B6BE /* CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3BB57A250B4F2C0066B6BE /* CalculatorUITests.swift */; };
 		3F4990EA25123CEA00518EFA /* CalculatorsCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4990E925123CEA00518EFA /* CalculatorsCore.swift */; };
-		3F6748262513425800F7E6D8 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6748252513425800F7E6D8 /* Math.swift */; };
+		3F6748262513425800F7E6D8 /* CalculatorsMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6748252513425800F7E6D8 /* CalculatorsMath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +52,7 @@
 		3F3BB57A250B4F2C0066B6BE /* CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITests.swift; sourceTree = "<group>"; };
 		3F3BB57C250B4F2C0066B6BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F4990E925123CEA00518EFA /* CalculatorsCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorsCore.swift; sourceTree = "<group>"; };
-		3F6748252513425800F7E6D8 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		3F6748252513425800F7E6D8 /* CalculatorsMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorsMath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +106,7 @@
 				3F3BB55C250B4F2A0066B6BE /* ViewController.swift */,
 				3F3BB55E250B4F2A0066B6BE /* Main.storyboard */,
 				3F4990E925123CEA00518EFA /* CalculatorsCore.swift */,
-				3F6748252513425800F7E6D8 /* Math.swift */,
+				3F6748252513425800F7E6D8 /* CalculatorsMath.swift */,
 				3F3BB566250B4F2C0066B6BE /* Info.plist */,
 				3FD51255250B9EA900924135 /* SupportingFiles */,
 			);
@@ -205,7 +205,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1170;
-				LastUpgradeCheck = 1170;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Anastasiia Spiridonova";
 				TargetAttributes = {
 					3F3BB554250B4F2A0066B6BE = {
@@ -276,7 +276,7 @@
 				3F3BB55D250B4F2A0066B6BE /* ViewController.swift in Sources */,
 				3F3BB559250B4F2A0066B6BE /* AppDelegate.swift in Sources */,
 				3F4990EA25123CEA00518EFA /* CalculatorsCore.swift in Sources */,
-				3F6748262513425800F7E6D8 /* Math.swift in Sources */,
+				3F6748262513425800F7E6D8 /* CalculatorsMath.swift in Sources */,
 				3F3BB55B250B4F2A0066B6BE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +358,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -418,6 +419,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

@@ -8,21 +8,22 @@
 
 import Foundation
 
-struct CalculatorCore {
+class CalculatorCore {
     
     private var accamulator: Double? = 0
     private var buffer = 0.0
     private var pendingBinaryOperation: PendingBinaryOperation?
     private let operations = OperationDictionary.operations
+    private var units = Units.degrees
     
-    private mutating func performPendingBinaryOperation() {
+    private func performPendingBinaryOperation() {
            if pendingBinaryOperation != nil && accamulator != nil {
                accamulator = pendingBinaryOperation!.perform(with: accamulator!)
                pendingBinaryOperation = nil
            }
        }
     
-    mutating func performOperation(_ symbol: String) {
+    func performOperation(_ symbol: String) {
         if let operation = operations[symbol] {
             switch operation {
             case .constant(let value):
@@ -30,26 +31,37 @@ struct CalculatorCore {
             case .random(let function):
                 accamulator = function()
             case .unaryOperation(let function):
-                if accamulator != nil {
-                    accamulator = function(accamulator!)
+                if let accamulator = accamulator {
+                    self.accamulator = function(accamulator)
                 }
             case .binaryOperation(let function):
-                if accamulator != nil {
-                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accamulator!)
-                    accamulator = nil
+                if let accamulator = accamulator {
+                    if pendingBinaryOperation != nil {
+                        performPendingBinaryOperation()
+                    }
+                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accamulator)
                 }
             case .clear:
                 accamulator = 0
                 pendingBinaryOperation = nil
             case .equals:
                 performPendingBinaryOperation()
+            case .trigonometryFunction(let function):
+                if let accamulator = accamulator {
+                    switch units {
+                    case .degrees:
+                        self.accamulator = function(accamulator * Double.pi / 180)
+                    case .radians:
+                        self.accamulator = function(accamulator)
+                    }
+                }
             }
         }
     }
     
     
     
-    mutating func setOperand(_ operand: Double) {
+    func setOperand(_ operand: Double) {
         accamulator = operand
     }
     
@@ -65,6 +77,15 @@ struct CalculatorCore {
         }
         set {
             buffer = newValue
+        }
+    }
+    
+    var unitsValue: Units {
+        get {
+            return units
+        }
+        set {
+            units = newValue
         }
     }
     

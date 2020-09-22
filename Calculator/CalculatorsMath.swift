@@ -1,5 +1,5 @@
 //
-//  Operation.swift
+//  CalculatorsMath.swift
 //  Calculator
 //
 //  Created by Anastasiia Spiridonova on 17.09.2020.
@@ -11,10 +11,16 @@ import Foundation
 public enum Operation {
     case constant(Double)
     case unaryOperation((Double) -> Double)
+    case trigonometryFunction((Double) -> Double)
     case binaryOperation((Double, Double) -> Double)
     case clear
     case random(() -> Double)
     case equals
+}
+
+public enum Units: String {
+    case degrees = "Deg"
+    case radians = "Rad"
 }
 
 public class OperationDictionary {
@@ -40,20 +46,20 @@ public class OperationDictionary {
         "log₂" : Operation.unaryOperation(log2),
         "-" : Operation.binaryOperation({ $0 - $1 }),
         "x!" : Operation.unaryOperation(factorial),
-        "sin" : Operation.unaryOperation(sin),
-        "sin⁻¹" : Operation.unaryOperation({ 1.0 / sin($0) }),
-        "cos" : Operation.unaryOperation(cos),
-        "cos⁻¹" : Operation.unaryOperation({ 1.0 / cos($0) }),
-        "tan" : Operation.unaryOperation(tan),
-        "tan⁻¹": Operation.unaryOperation({ 1.0 / tan($0) }),
+        "sin" : Operation.trigonometryFunction(sin),
+        "sin⁻¹" : Operation.trigonometryFunction({ 1.0 / sin($0) }),
+        "cos" : Operation.trigonometryFunction(cos),
+        "cos⁻¹" : Operation.trigonometryFunction({ 1.0 / cos($0) }),
+        "tan" : Operation.trigonometryFunction(tan),
+        "tan⁻¹": Operation.trigonometryFunction({ 1.0 / tan($0) }),
         "e" : Operation.constant(M_E),
         "+" : Operation.binaryOperation({ $0 + $1 }),
-        "sinh" : Operation.unaryOperation(sinh),
-        "sinh⁻¹" : Operation.unaryOperation({ 1.0 / sinh($0) }),
-        "cosh" : Operation.unaryOperation(cosh),
-        "cosh⁻¹" : Operation.unaryOperation({ 1.0 / cos($0)} ),
-        "tanh" : Operation.unaryOperation(tanh),
-        "tanh⁻¹" : Operation.unaryOperation({ 1.0 / tanh($0) }),
+        "sinh" : Operation.trigonometryFunction(sinh),
+        "sinh⁻¹" : Operation.trigonometryFunction({ 1.0 / sinh($0) }),
+        "cosh" : Operation.trigonometryFunction(cosh),
+        "cosh⁻¹" : Operation.trigonometryFunction({ 1.0 / cos($0)} ),
+        "tanh" : Operation.trigonometryFunction(tanh),
+        "tanh⁻¹" : Operation.trigonometryFunction({ 1.0 / tanh($0) }),
         "𝜋" : Operation.constant(Double.pi),
         "Rand" : Operation.random(random),
         "=" : Operation.equals
