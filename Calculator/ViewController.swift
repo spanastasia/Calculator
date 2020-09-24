@@ -184,7 +184,7 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if Double(view.bounds.width) > Double(view.bounds.height) {
+        if Double(view.bounds.width) >= Double(view.bounds.height) || Double(view.bounds.width) > 600 {
             if basicFunctions.first!.isHidden == alternativeFunctions.first!.isHidden {
                 basicFunctions.forEach(showBtn)
                 alternativeFunctions.forEach(hideBtn)
